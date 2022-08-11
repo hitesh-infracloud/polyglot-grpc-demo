@@ -8,18 +8,30 @@ Example taken to achieve the goal is : gRPC client sends two numbers (in a singl
 
 Below are the steps (at a high level) that I followed to code the demo
 
-## Steps
+## Steps to install protoc and generate 
+1. `go install github.com/golang/protobuf/protoc-gen-go@latest` -> installs protoc globally. The binary resides either at $HOME/go or /usr/local/go
+2. `go install github.com/golang/protobuf/protoc-gen-go-grpc@latest` -> same locations as above
+3. Either follow #4 or #5
+4. To generate grpc and go code from proto files (separately):
+   1. protoc --proto_path=<directory to look for proto file> --go_out=<output dir> <filepath> -> this will generate go code
+   2. for this case (first cd into go-grpc-server): `protoc --proto_path=addition --go_out=addition addition/addition.go`
+   3. protoc --go-grpc_out=<output dir> <filepath>
+   4. for this case (first cd into go-grpc-server): `protoc --go-grpc_out==addition addition/addition.go`
+5. I personally prefer using buf instead of generating manually:
+   1. Still have todo #1 and #2
+   2. Install buf: `go install github.com/bufbuild/buf/cmd/buf@v1.7.0`
+   3. Install task: `sudo snap install task --classic`
+   4. Install gogofaster plugin: `go install github.com/gogo/protobuf/protoc-gen-gogofaster@latest`
+   5. Create buf.gen.yaml, buf.yaml and Taskfile.yaml with given contents
+   6. Generate: `task generate`
 
-1.  Get protoc binary [here](https://github.com/google/protobuf/releases) and install protoc compiler plugin for golang, using
-    `$ go get -u github.com/golang/protobuf/protoc-gen-go`
-
-2.  Create the `.proto` file with service definition and message types
-3.  Generate source code from the `.proto` file for Golang using this command:
-
-    `$ protoc -I addition addition/addition.proto --go_out=plugins=grpc:addition`
-
-4.  Code the Go gRPC server's Addition service by implementing the service interface auto generated in step 2
-5.  Code the NodeJs gRPC client by dynamically loading the `.proto` file and obtaining the client stub, then making calls to gRPC server
+## Steps to install yarn:
+1. sudo apt remove cmdtest (optional, do if it causes trouble)
+2. sudo apt remove yarn
+3. curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+4. echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+5. sudo apt-get update
+6. sudo apt-get install yarn
 
 ## Running the server and client
 
