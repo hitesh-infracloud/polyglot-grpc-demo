@@ -6,3 +6,7 @@ tasks:
     cmds:
       - buf mod update
       - buf generate
+  certs:
+    desc: "Generate certs"
+    cmds:
+      - ./certs/gen.sh
