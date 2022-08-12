@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 	"os"
@@ -58,6 +59,9 @@ func main() {
 
 	grpcServer := grpc.NewServer(grpc.Creds(tlsCredentials))
 	addition.RegisterAdditionServer(grpcServer, newAddServer())
+
+	reflection.Register(grpcServer)
+
 	go func() {
 		err := grpcServer.Serve(lis)
 		log.Fatalf("failed to start server: %v", err)
