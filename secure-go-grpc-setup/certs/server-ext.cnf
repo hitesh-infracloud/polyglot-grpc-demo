@@ -1,1 +1,1 @@
-subjectAltName=DNS:*.infracloud.io,DNS:*.infracloud.org,IP:0.0.0.0
+subjectAltName=DNS:*.infracloud.io,DNS:localhost,IP:0.0.0.0
