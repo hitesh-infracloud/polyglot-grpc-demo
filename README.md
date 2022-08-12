@@ -60,3 +60,16 @@ and you will get the output in the client side as
 4. Generate python stub: `python3 -m grpc_tools.protoc -I addition --python_out=addition --grpc_python_out=addition addition/addition.proto`
 5. Code reference: python-client/python_client.py
 6. Run python client: `cd python_client && python3 python_client.py`
+
+## Certificate generation for secured server
+1. The certificate generation has 3 parts:
+   1. First, generate CA's private key and its self-signed certificate
+   2. Second, create server's private key and CSR
+   3. Third, use CA's private key to sign the server's CSR to get server certificate
+2. Usage of certificate on server side:
+   1. Load server certificate and server private key
+   2. Create transport credentials out of it and secure the server
+3. Usage of certificate on client side
+   1. Load CA's certificate.
+   2. Create transport credentials out of it and send requests to server
+4. Since server's certificate was signed using CA's private key, server will be able to recognize the certificate sent by client via request.
